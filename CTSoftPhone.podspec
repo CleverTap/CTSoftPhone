@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
 s.name                      = "CTSoftPhone"
-s.version                   = '0.0.1-alpha'
-s.summary                   = "Basic PJSUA wrapper enabling iOS voip calling"
-s.homepage                  = "https://github.com/CleverTap/ctsoftphone"
+s.version                   = '0.0.2-alpha'
+s.summary                   = "Basic PJSUA/PJSIP wrapper enabling iOS voip calling"
+s.homepage                  = "https://github.com/CleverTap/CTSoftPhone"
 s.source                    = { :http => "https://github.com/CleverTap/CTSoftPhone/releases/download/#{s.version}/CTSoftPhone.xcframework.zip" }
 s.license                   = { :type => 'MIT', :file => 'License.txt' }
 s.author                    = { "CleverTap" => "http://www.clevertap.com" }

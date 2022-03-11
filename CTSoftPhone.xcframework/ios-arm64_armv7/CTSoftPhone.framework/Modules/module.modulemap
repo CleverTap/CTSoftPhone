@@ -1,0 +1,4 @@
+framework module CTSoftPhone {    
+    header "CTSoftPhone.h"
+    export *
+}
