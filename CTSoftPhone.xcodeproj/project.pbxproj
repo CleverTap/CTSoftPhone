@@ -54,6 +54,8 @@
 		D04FEF7527D82FB200019537 /* ct_pjsua */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ct_pjsua; sourceTree = "<group>"; };
 		D04FEF7827D8303F00019537 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		D093A58627E6BEDF004790E5 /* simulator-libg7221codec-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "simulator-libg7221codec-apple-darwin_ios.a"; path = "vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libg7221codec-apple-darwin_ios.a"; sourceTree = "<group>"; };
+		D0E7D9F327E7B00300D1B994 /* simulator-libgsmcodec-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "simulator-libgsmcodec-apple-darwin_ios.a"; sourceTree = "<group>"; };
+		D0E7D9F427E7B00300D1B994 /* simulator-libg7221codec-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "simulator-libg7221codec-apple-darwin_ios.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 		D04FEA4E27D82E8900019537 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D0E7D9F227E7B00300D1B994 /* simulator */,
 				D04FEA4F27D82E8900019537 /* libyuv-apple-darwin_ios.a */,
 				D04FEA5027D82E8900019537 /* libpjmedia-codec-apple-darwin_ios.a */,
 				D04FEA5127D82E8900019537 /* libpjnath-apple-darwin_ios.a */,
@@ -148,6 +151,15 @@
 				D04FEF7827D8303F00019537 /* VideoToolbox.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D0E7D9F227E7B00300D1B994 /* simulator */ = {
+			isa = PBXGroup;
+			children = (
+				D0E7D9F327E7B00300D1B994 /* simulator-libgsmcodec-apple-darwin_ios.a */,
+				D0E7D9F427E7B00300D1B994 /* simulator-libg7221codec-apple-darwin_ios.a */,
+			);
+			path = simulator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
