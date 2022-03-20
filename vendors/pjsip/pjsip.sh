@@ -83,7 +83,7 @@ function configure () {
 		# Disable SDL (default: not disabled), not available on every platform
 		# Disable ffmpeg (default: not disabled), using VideoToolbox
 		CONFIGURE="./configure --disable-ffmpeg --disable-sdl"
-	elif [ "$TYPE" == "ios" ]; then
+	elif [ "$TYPE" == "ios" ] || [ "$TYPE" == "ios-simulator" ]; then
 		# iOS
 		CONFIGURE="./configure-iphone --disable-libwebrtc"
 		echo "#define PJ_CONFIG_IPHONE 1" >> "${PJSIP_CONFIG_PATH}"
@@ -115,15 +115,20 @@ function configure () {
 		export DEVPATH="${OSX_PLATFORM}/Developer"
 	elif [ "$TYPE" == "ios" ]; then
 		# iOS
-		if [ "$ARCH" == "x86_64" ] || [ "$ARCH" == "i386" ]; then
+		export MIN_IOS="-miphoneos-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
+		export DEVPATH="${IPHONEOS_PLATFORM}/Developer"
+		export CFLAGS="${CFLAGS}"
+		export LDFLAGS="${LDFLAGS}"
+	elif [ "$TYPE" == "ios-simulator" ]; then
+		# iOS Simulator
+		if [ "$ARCH" == "x86_64" ] || [ "$ARCH" == "arm64" ]; then
+			export DEVPATH="${IPHONESIMULATOR_PLATFORM}/Developer"
+			export CFLAGS="${CFLAGS} -O2 -m64 -mios-simulator-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
+			export LDFLAGS="${LDFLAGS} -O2 -m64 -mios-simulator-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
+		elif [ "$ARCH" == "i386" ]; then
 			export DEVPATH="${IPHONESIMULATOR_PLATFORM}/Developer"
 			export CFLAGS="${CFLAGS} -O2 -m32 -mios-simulator-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
 			export LDFLAGS="${LDFLAGS} -O2 -m32 -mios-simulator-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
-		else
-			export MIN_IOS="-miphoneos-version-min=${IPHONEOS_DEPLOYMENT_VERSION}"
-			export DEVPATH="${IPHONEOS_PLATFORM}/Developer"
-			export CFLAGS="${CFLAGS}"
-			export LDFLAGS="${LDFLAGS}"
 		fi
 	fi
 
@@ -144,7 +149,7 @@ function configure () {
 	fi
 	if [[ ${OPENSSL_PREFIX} ]]; then
 		export CFLAGS="${CFLAGS} -I${OPENSSL_PREFIX}/include"
-		if [ "$TYPE" == "ios" ]; then
+		if [ "$TYPE" == "ios" ] || [ "$TYPE" == "ios-simulator" ]; then
 			export LDFLAGS="${LDFLAGS} -L${OPENSSL_PREFIX}/lib/ios"
 		elif [ "$TYPE" == "macos" ]; then
 			export LDFLAGS="${LDFLAGS} -L${OPENSSL_PREFIX}/lib/macos"
@@ -241,7 +246,12 @@ function do_lipo() {
 
 			if [ "$OPTIONS" != "" ]; then
 				OUTPUT_PREFIX=$(dirname "${DST_DIR}")
-				OUTPUT="${OUTPUT_PREFIX}/lib/${PATTERN_FILE/-$1-/-}"
+                if [ "$TYPE" == "ios-simulator" ]; then   
+				    OUTPUT="${OUTPUT_PREFIX}/lib/simulator-${PATTERN_FILE/-$1-/-}"
+                else
+				    OUTPUT="${OUTPUT_PREFIX}/lib/${PATTERN_FILE/-$1-/-}"
+                fi    
+                echo "${OUTPUT}"
 
 				OPTIONS="${OPTIONS} -create -output ${OUTPUT}"
 				echo "$OPTIONS" >> "${TMP}"
@@ -257,8 +267,9 @@ function do_lipo() {
 download "${PJSIP_URL}" "${PJSIP_DIR}"
 
 
-build "i386" "${IPHONESIMULATOR_SDK}" "ios"
-build "x86_64" "${IPHONESIMULATOR_SDK}" "ios"
+build "i386" "${IPHONESIMULATOR_SDK}" "ios-simulator"
+build "x86_64" "${IPHONESIMULATOR_SDK}" "ios-simulator"
+build "arm64" "${IPHONESIMULATOR_SDK}" "ios-simulator"
 build "armv7" "${IPHONEOS_SDK}" "ios"
 build "armv7s" "${IPHONEOS_SDK}" "ios"
 build "arm64" "${IPHONEOS_SDK}" "ios"
@@ -266,5 +277,6 @@ build "arm64" "${IPHONEOS_SDK}" "ios"
 # We don't support x86 for macOS.
 #build "x86_64" "${OSX_SDK}" "macos"
 
-do_lipo "ios" "i386" "x86_64" "armv7" "armv7s" "arm64"
+do_lipo "ios" "armv7" "armv7s" "arm64"
+do_lipo "ios-simulator" "i386" "x86_64" "arm64"
 #do_lipo "macos" "x86_64"
