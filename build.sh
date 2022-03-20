@@ -40,7 +40,7 @@ build_ios() {
   -sdk iphonesimulator \
   -destination 'generic/platform=iOS Simulator' \
   SKIP_INSTALL=NO \
-  VALID_ARCHS='x86_64'
+  VALID_ARCHS='x86_64 arm64'
 
   cp -r $archivePath-iphoneos.xcarchive/Products/Library/Frameworks/$productName.framework \
     build/$productName.framework
