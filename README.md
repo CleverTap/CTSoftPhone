@@ -57,5 +57,5 @@ Add the `https://github.com/CleverTap/CTSoftPhone.git` url to your project's Swi
 
 ### Manual
 
-Download the `CTSoftPhone.xcframework` included in this repository, drag it into your project and add it as an embedded framework in your build setting
+Download the `CTSoftPhone.xcframework` included in this repository, drag it into your project and add it as an embedded framework in your build settings
 
