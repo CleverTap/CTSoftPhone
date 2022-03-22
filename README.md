@@ -1,6 +1,6 @@
 # CTSoftPhone
 
-Basic PJSUA/PJSIP wrapper supporting VOIP calling on iOS devices and simulators
+Basic [PJSUA/PJSIP](https://www.pjsip.org/) wrapper supporting VOIP calling on iOS devices and simulators
 
 ## Usage
 
