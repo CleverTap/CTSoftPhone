@@ -29,6 +29,17 @@ pjsua_call_id callId;
 pjsua_call_info ci;
 int logLevel = CTSoftPhoneLogOff;
 os_log_t CTSoftPhoneLog;
+static id _delegate = nil;
+
++ (void)setDelegate:(id<CTSoftPhoneDelegate>)delegate {
+    if (delegate != _delegate) {
+        _delegate = delegate;
+    }
+}
+
++ (id<CTSoftPhoneDelegate>)delegate {
+    return _delegate;
+}
 
 + (void)initialize {
     CTSoftPhoneLog = os_log_create("com.clevertap.CTSoftPhone", "CTSoftPhone");
@@ -191,7 +202,7 @@ static void on_call_media_state(pjsua_call_id call_id) {
             // When media is active, connect call to sound device.
             pjsua_conf_connect(ci.conf_slot, 0);
             pjsua_conf_connect(0, ci.conf_slot);
-            
+            [_delegate mediaTransferActive];
         }
         if (ci.media_status == PJSUA_CALL_MEDIA_NONE) {
             pjsua_conf_disconnect(ci.conf_slot, 0);

@@ -11,6 +11,11 @@ typedef NS_ENUM(int, CTSoftPhoneStatus) {
     CTSoftPhoneStatusFail = 1
 };
 
+@protocol CTSoftPhoneDelegate <NSObject>
+@required
+- (void)mediaTransferActive;
+@end
+
 @interface CTSoftPhone: NSObject
 
 + (void)setDebugLevel:(CTSoftPhoneLogLevel)level;
@@ -26,6 +31,8 @@ typedef NS_ENUM(int, CTSoftPhoneStatus) {
 - (void)speakeroff;
 
 void answercall(void);
+
+@property (nonatomic, weak, class) id<CTSoftPhoneDelegate> _Nullable delegate;
 
 @end
 
