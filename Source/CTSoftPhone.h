@@ -20,10 +20,12 @@ typedef NS_ENUM(int, CTSoftPhoneStatus) {
 
 + (void)setDebugLevel:(CTSoftPhoneLogLevel)level;
 
-- (CTSoftPhoneStatus)startWithNumber:(NSString *)number
-                            withHost:(NSString*)host
-                     withCredentials:(NSString *)credentials;
+- (CTSoftPhoneStatus) startWithNumber:(NSString *)number
+                             withHost:(NSString*)host
+                      withCredentials:(NSString *)credentials
+                           isReinvite: (BOOL) isReinvite;
 - (void)stop;
+- (void)destroy;
 - (void)hangup;
 - (void)mute;
 - (void)unmute;
