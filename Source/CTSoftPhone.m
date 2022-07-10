@@ -419,7 +419,7 @@ static void on_call_media_state(pjsua_call_id call_id) {
         }
         else if (ci.media_status == PJSUA_CALL_MEDIA_NONE) {
             pjsua_conf_disconnect(ci.conf_slot, 0);
-            [[CTSoftPhone class] onCallState: CTSoftPhoneCallStateMediaActive];
+            [[CTSoftPhone class] onCallState: CTSoftPhoneCallStateMediaNone];
         }
         else if (ci.media_status == PJSUA_CALL_MEDIA_LOCAL_HOLD) {
             [[CTSoftPhone class] onCallState: CTSoftPhoneCallStateMediaLocalHold];
