@@ -8,11 +8,14 @@
                     } \
                 } while (0)
 
-@interface CTSoftPhone () {}
+@interface CTSoftPhone () {
+    dispatch_queue_t _serialQueue;
+}
 
 @property (nonatomic, weak, readwrite) id<CTSoftPhoneDelegate> _Nullable delegate;
 
-@property(nonatomic,assign) pjsua_call_id call_id;
+@property(atomic,assign) pjsua_call_id call_id;
+@property(atomic,assign) bool pjsuaInitialized;
 
 @end
 
@@ -21,13 +24,13 @@
 #define BIGVAL 0x7FFFFFFFL
 pj_status_t status;
 static pjsua_acc_id acc_id = -1;
-pjsua_call_id callId;
+static _Atomic pjsua_call_id callId;
 pjsua_call_info ci;
 pj_pool_t *pool;
 int logLevel = CTSoftPhoneLogOff;
 os_log_t CTSoftPhoneLog;
 static CTSoftPhone * _sharedInstance;
-static Boolean CT_PJ_INITIALIZED = false;
+static const void *const kQueueKey = &kQueueKey;
 
 + (void)initialize {
     CTSoftPhoneLog = os_log_create("com.clevertap.CTSoftPhone", "CTSoftPhone");
@@ -71,6 +74,8 @@ static Boolean CT_PJ_INITIALIZED = false;
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        _serialQueue = dispatch_queue_create([@"com.clevertap.CTSoftPhone" UTF8String], DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_set_specific(_serialQueue, kQueueKey, (__bridge void *)self, NULL);
     }
     return self;
 }
@@ -87,6 +92,21 @@ static Boolean CT_PJ_INITIALIZED = false;
     }
 }
 
+#pragma mark - Serial Queue Operations
+
+- (void)runAsync:(void (^)(void))taskBlock {
+    if ([self inSerialQueue]) {
+        taskBlock();
+    } else {
+        dispatch_async(_serialQueue, taskBlock);
+    }
+}
+
+- (BOOL)inSerialQueue {
+    CTSoftPhone *currentQueue = (__bridge id) dispatch_get_specific(kQueueKey);
+    return currentQueue == self;
+}
+
 /**
  registers the user to sip server
 
@@ -96,120 +116,120 @@ static Boolean CT_PJ_INITIALIZED = false;
  */
 - (void)registerWithNumber:(NSString *)number
                       withHost:(NSString*)host
-               withCredentials:(NSString *)credentials {
-    @try {
-        CTSoftPhone_Log(CTSoftPhoneLogInfo, "register called");
-        [self registerThread];
-        
-        NSString *num = number;
-        NSString *_host = host;
-        if (!CT_PJ_INITIALIZED) {
-            CT_PJ_INITIALIZED = true;
+           withCredentials:(NSString *)credentials {
+    CTSoftPhone_Log(CTSoftPhoneLogInfo, "register called");
+    [self runAsync: ^{
+        @try {
+            [self registerThread];
+            NSString *num = number;
+            NSString *_host = host;
+            if (!self.pjsuaInitialized) {
+               self.pjsuaInitialized = true;
+                
+                if (logLevel == CTSoftPhoneLogDebug) {
+                    pj_log_set_level(1);
+                } else {
+                    pj_log_set_level(0);
+                }
+                
+                status = pjsua_create();
+                if (status != PJ_SUCCESS) {
+                    CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed creating pjsua");
+                    error_exit("error in pjsua_create()", status);
+                    [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
+                    return;
+                }
+                /* Init pjsua */
+                pjsua_config cfg_log;
+                pjsua_logging_config log_cfg;
+                pjsua_config_default(&cfg_log);
+                cfg_log.cb.on_incoming_call = &on_incoming_call;
+                cfg_log.cb.on_call_media_state = &on_call_media_state;
+                cfg_log.cb.on_call_state = &on_call_state;
+                cfg_log.cb.on_reg_state2 = &on_reg_state2;
+                
+                pjsua_logging_config_default(&log_cfg);
+                if (logLevel == CTSoftPhoneLogDebug) {
+                    log_cfg.console_level = 4;
+                } else {
+                    log_cfg.console_level = 0;
+                }
+                
+                status = pjsua_init(&cfg_log, &log_cfg, NULL);
+                if (status != PJ_SUCCESS) {
+                    CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed initializing pjsua");
+                    error_exit("Error in pjsua_init()", status);
+                    [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
+                    return;
+                }
+                
+                pjsua_transport_config tcfg;
+                pjsua_transport_config_default(&tcfg);
+                tcfg.port = 7503;
+                status = pjsua_transport_create(PJSIP_TRANSPORT_TCP, &tcfg, NULL);
+                status = pjsua_start();
+                if (status != PJ_SUCCESS) {
+                    CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed starting pjsua");
+                    error_exit("Error starting pjsua", status);
+                    [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
+                    return;
+                }
+            }
+            NSString *string1 = @"sip:";
+            NSString *string2 = @"@";
+            NSString *string3 = @":7503;transport=tcp";
+            NSString *string4 = @";transport=tcp";
+            NSString *uri = [string1 stringByAppendingString:num];
+            NSString *reg = [string2 stringByAppendingString:_host];
+            NSString *newUri = [uri stringByAppendingString:reg];
+            NSString *proxy = [string1 stringByAppendingString:_host];
+            NSString *reg_uri = [proxy stringByAppendingString:string4];
+            proxy = [proxy stringByAppendingString:string3];
+            const char *r = [reg_uri UTF8String];
+            const char *p = [proxy UTF8String];
+            const char *number = [num UTF8String];
+            const char *pjsipPassword = [credentials UTF8String];
+            pjsua_acc_config cfg;
+            pjsua_acc_config_default(&cfg);
             
-            if (logLevel == CTSoftPhoneLogDebug) {
-                pj_log_set_level(1);
+            NSArray *namesArray = [newUri componentsSeparatedByString:@"@"];
+            NSString *newChar;
+            if (namesArray.count > 0) {
+                newChar = [namesArray[0] stringByAppendingString: @"@"];
+                newChar = [newChar stringByAppendingString: namesArray[1]];
+                
+            }
+            cfg.id = pj_str((char*)[newChar UTF8String]);
+            cfg.reg_uri = pj_str((char*)r);
+            cfg.proxy[cfg.proxy_cnt++] = pj_str((char*)p);
+            cfg.cred_count = 1;
+            cfg.cred_info[0].realm = pj_str("*");
+            cfg.cred_info[0].scheme = pj_str("digest");
+            cfg.cred_info[0].username = pj_str((char*)number);
+            cfg.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
+            cfg.cred_info[0].data = pj_str((char*)pjsipPassword);
+            if (acc_id >= 0) {
+                status = pjsua_acc_modify(acc_id, &cfg);
             } else {
-                pj_log_set_level(0);
+                status = pjsua_acc_add(&cfg, PJ_TRUE, &acc_id);
             }
             
-            status = pjsua_create();
-            if (status != PJ_SUCCESS) {
-                CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed creating pjsua");
-                error_exit("error in pjsua_create()", status);
-                [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
+            if (status == PJ_SUCCESS) {
+                CTSoftPhone_Log(CTSoftPhoneLogInfo, "sip account add success");
                 return;
-            }
-            /* Init pjsua */
-            pjsua_config cfg_log;
-            pjsua_logging_config log_cfg;
-            pjsua_config_default(&cfg_log);
-            cfg_log.cb.on_incoming_call = &on_incoming_call;
-            cfg_log.cb.on_call_media_state = &on_call_media_state;
-            cfg_log.cb.on_call_state = &on_call_state;
-            cfg_log.cb.on_reg_state2 = &on_reg_state2;
-            
-            pjsua_logging_config_default(&log_cfg);
-            if (logLevel == CTSoftPhoneLogDebug) {
-                log_cfg.console_level = 4;
             } else {
-                log_cfg.console_level = 0;
-            }
-            
-            status = pjsua_init(&cfg_log, &log_cfg, NULL);
-            if (status != PJ_SUCCESS) {
-                CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed initializing pjsua");
-                error_exit("Error in pjsua_init()", status);
-                [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
-                return;
-            }
-            
-            pjsua_transport_config tcfg;
-            pjsua_transport_config_default(&tcfg);
-            tcfg.port = 7503;
-            status = pjsua_transport_create(PJSIP_TRANSPORT_TCP, &tcfg, NULL);
-            status = pjsua_start();
-            if (status != PJ_SUCCESS) {
-                CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed starting pjsua");
-                error_exit("Error starting pjsua", status);
+                CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed adding sip server account");
+                error_exit("error adding pjsua account", status);
                 [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
                 return;
             }
         }
-        /* Register to SIP server by creating SIP account. */
-        NSString *string1 = @"sip:";
-        NSString *string2 = @"@";
-        NSString *string3 = @":7503;transport=tcp";
-        NSString *string4 = @";transport=tcp";
-        NSString *uri = [string1 stringByAppendingString:num];
-        NSString *reg = [string2 stringByAppendingString:_host];
-        NSString *newUri = [uri stringByAppendingString:reg];
-        NSString *proxy = [string1 stringByAppendingString:_host];
-        NSString *reg_uri = [proxy stringByAppendingString:string4];
-        proxy = [proxy stringByAppendingString:string3];
-        const char *r = [reg_uri UTF8String];
-        const char *p = [proxy UTF8String];
-        const char *number = [num UTF8String];
-        const char *pjsipPassword = [credentials UTF8String];
-        pjsua_acc_config cfg;
-        pjsua_acc_config_default(&cfg);
-
-        NSArray *namesArray = [newUri componentsSeparatedByString:@"@"];
-        NSString *newChar;
-        if (namesArray.count > 0) {
-            newChar = [namesArray[0] stringByAppendingString: @"@"];
-            newChar = [newChar stringByAppendingString: namesArray[1]];
-            
-        }
-        cfg.id = pj_str((char*)[newChar UTF8String]);
-        cfg.reg_uri = pj_str((char*)r);
-        cfg.proxy[cfg.proxy_cnt++] = pj_str((char*)p);
-        cfg.cred_count = 1;
-        cfg.cred_info[0].realm = pj_str("*");
-        cfg.cred_info[0].scheme = pj_str("digest");
-        cfg.cred_info[0].username = pj_str((char*)number);
-        cfg.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
-        cfg.cred_info[0].data = pj_str((char*)pjsipPassword);
-        if (acc_id >= 0) {
-            status = pjsua_acc_modify(acc_id, &cfg);
-        } else {
-            status = pjsua_acc_add(&cfg, PJ_TRUE, &acc_id);
-        }
-        
-        if (status == PJ_SUCCESS) {
-            CTSoftPhone_Log(CTSoftPhoneLogInfo, "sip account add success");
-            return;
-        } else {
-            CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed adding sip server account");
-            error_exit("error adding pjsua account", status);
+         @catch (NSException *exception) {
+            CTSoftPhone_Log(CTSoftPhoneLogInfo, "error: %@", exception.reason);
             [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
             return;
         }
-    }
-    @catch (NSException *exception) {
-        CTSoftPhone_Log(CTSoftPhoneLogInfo, "error: %@", exception.reason);
-        [self.delegate onRegistrationState: CTSoftPhoneRegistrationStateFail];
-        return;
-    }
+    }];
 }
 
 /**
@@ -217,44 +237,50 @@ static Boolean CT_PJ_INITIALIZED = false;
  */
 
 - (void)destroy {
-    @try {
-        [self registerThread];
-        ct_pjsua_destroy();
-        CT_PJ_INITIALIZED = false;
-        [[CTSoftPhone class] onRegistrationState: CTSoftPhoneRegistrationStateDestroyed];
-        CTSoftPhone_Log(CTSoftPhoneLogInfo, "destroy success");
-    }
-    @catch (NSException *exception) {
-        CTSoftPhone_Log(CTSoftPhoneLogDebug, "unable to handle destroy: %@", exception);
-    }
+    [self runAsync: ^{
+        @try {
+            [self registerThread];
+            ct_pjsua_destroy();
+            self.pjsuaInitialized = false;
+            [[CTSoftPhone class] onRegistrationState: CTSoftPhoneRegistrationStateDestroyed];
+            CTSoftPhone_Log(CTSoftPhoneLogInfo, "destroy success");
+        }
+        @catch (NSException *exception) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "unable to handle destroy: %@", exception);
+        }
+    }];
 }
 
 - (void)answercall {
-    @try {
-        [self registerThread];
-        pjsua_call_id call_id  = getCallid();
-        CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in answer: %d", call_id);
-        pjsua_call_answer(call_id, 200, NULL, NULL);
-    }
-    @catch (NSException *exception) {
-        CTSoftPhone_Log(CTSoftPhoneLogDebug, "answercall: %@", exception);
-    }
+    [self runAsync: ^{
+        @try {
+            [self registerThread];
+            pjsua_call_id call_id  = getCallid();
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in answer: %d", call_id);
+            pjsua_call_answer(call_id, 200, NULL, NULL);
+        }
+        @catch (NSException *exception) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "answercall: %@", exception);
+        }
+    }];
 }
 
 /**
  called when the user is trying to disconnect the call to hangup the current call by pjsip
  */
 - (void)hangup {
-    @try {
-        [self registerThread];
-        pjsua_call_id call_id = getCallid();
-        CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in hangup: %d", call_id);
-        pjsua_call_hangup(call_id, 200, NULL, NULL);
-        CTSoftPhone_Log(CTSoftPhoneLogInfo, "call hangup success");
-    }
-    @catch (NSException *exception) {
-        CTSoftPhone_Log(CTSoftPhoneLogDebug, "hangup: %@", exception);
-    }
+    [self runAsync: ^{
+        @try {
+            [self registerThread];
+            pjsua_call_id call_id = getCallid();
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in hangup: %d", call_id);
+            pjsua_call_hangup(call_id, 200, NULL, NULL);
+            CTSoftPhone_Log(CTSoftPhoneLogInfo, "call hangup success");
+        }
+        @catch (NSException *exception) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "hangup: %@", exception);
+        }
+    }];
 }
 
 /**
@@ -330,14 +356,14 @@ static Boolean CT_PJ_INITIALIZED = false;
  */
 - (void)unmute {
     @try {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        [self runAsync: ^{
             [self registerThread];
             if (ci.conf_slot != 0 && ci.conf_slot != -1 ) {
                 CTSoftPhone_Log(CTSoftPhoneLogInfo, "microphone disconnected from call");
                 pjsua_conf_connect(0,ci.conf_slot);
                 CTSoftPhone_Log(CTSoftPhoneLogInfo, "call unmute success");
             }
-        });
+        }];
     }
     @catch (NSException *exception) {
         CTSoftPhone_Log(CTSoftPhoneLogDebug, "unmute: %@", exception);
@@ -349,15 +375,15 @@ static Boolean CT_PJ_INITIALIZED = false;
  */
 - (void)mute {
     @try {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self registerThread];
+       [self runAsync: ^{
+           [self registerThread];
             CTSoftPhone_Log(CTSoftPhoneLogInfo, "call mute status: %d", ci.conf_slot);
             if (ci.conf_slot != 0 && ci.conf_slot != -1) {
                 CTSoftPhone_Log(CTSoftPhoneLogDebug, "microphone disconnected from call");
                 pjsua_conf_disconnect(0, ci.conf_slot);
                 CTSoftPhone_Log(CTSoftPhoneLogInfo, "call mute success");
             }
-        });
+        }];
     }
     @catch (NSException *exception) {
         CTSoftPhone_Log(CTSoftPhoneLogDebug, "unable to mute microphone: %@", exception);
