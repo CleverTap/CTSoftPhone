@@ -232,6 +232,45 @@ static const void *const kQueueKey = &kQueueKey;
     }];
 }
 
+- (void)handleIpChange:(BOOL)ipv6 {
+    [self runAsync: ^{
+        @try {
+            [self registerThread];
+            if (callId < 0 || acc_id < 0) {
+                return;
+            }
+            pjsua_ip_change_param param;
+            
+            if(ipv6) {
+                //create new ipv6 transport, if it's not yet available
+                pjsua_transport_config tcfg;
+                pjsua_transport_config_default(&tcfg);
+                tcfg.port = 7503;
+                pjsua_transport_id transportId;
+                status = pjsua_transport_create(PJSIP_TRANSPORT_TCP6, &tcfg, &transportId);
+
+                // bind account to IPv6 transport
+                pjsua_acc_set_transport(acc_id, transportId);
+
+                // modify specific IPv6 account configuration
+                pjsua_acc_config acc_cfg;
+                pj_pool_t pool;
+                pjsua_acc_get_config(acc_id, &pool, &acc_cfg);
+                acc_cfg.ipv6_media_use = true;
+                acc_cfg.ip_change_cfg.hangup_calls = PJ_TRUE;
+                pjsua_acc_modify(acc_id, &acc_cfg);
+            }
+            pjsua_ip_change_param_default(&param);
+            pjsua_handle_ip_change(&param);
+            
+            CTSoftPhone_Log(CTSoftPhoneLogInfo, "handleIPChange running");
+        }
+        @catch (NSException *exception) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "unable to handle ip change: %@", exception);
+        }
+    }];
+}
+
 /**
  called by user to shutdown the service.
  */

@@ -15,7 +15,7 @@ typedef NS_ENUM(int, CTSoftPhoneRegistrationState) {
 typedef NS_ENUM(int, CTSoftPhoneCallState) {
     CTSoftPhoneCallStateNull = 0,
     CTSoftPhoneCallStateCalling = 1,
-    CTSoftPhoneCallStateIincoming = 2,
+    CTSoftPhoneCallStateIncoming = 2,
     CTSoftPhoneCallStateEarly = 3,
     CTSoftPhoneCallStateConnecting = 4,
     CTSoftPhoneCallStateConfired = 5,
@@ -43,6 +43,7 @@ typedef NS_ENUM(int, CTSoftPhoneCallState) {
 - (void)registerWithNumber:(NSString *_Nonnull)number
                    withHost:(NSString*_Nonnull)host
             withCredentials:(NSString *_Nonnull)credentials;
+- (void)handleIpChange:(BOOL)ipv6;
 - (void)destroy;
 - (void)hangup;
 - (void)mute;
