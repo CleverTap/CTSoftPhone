@@ -484,6 +484,7 @@
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libspeex-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libsrtp-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libyuv-apple-darwin_ios.a",
+					"$(PROJECT_DIR)/vendors/pjsip/build/opus/lib/libopus.a",
 				);
 				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libg7221codec-apple-darwin_ios.a",
@@ -506,6 +507,7 @@
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libspeex-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libsrtp-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libyuv-apple-darwin_ios.a",
+					"$(PROJECT_DIR)/vendors/pjsip/build/opus/lib/simulator/simulator-libopus.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.clevertap.CTSoftPhone;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -565,6 +567,7 @@
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libspeex-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libsrtp-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/libyuv-apple-darwin_ios.a",
+					"$(PROJECT_DIR)/vendors/pjsip/build/opus/lib/libopus.a",
 				);
 				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libg7221codec-apple-darwin_ios.a",
@@ -587,6 +590,7 @@
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libspeex-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libsrtp-apple-darwin_ios.a",
 					"$(PROJECT_DIR)/vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libyuv-apple-darwin_ios.a",
+					"$(PROJECT_DIR)/vendors/pjsip/build/opus/lib/simulator/simulator-libopus.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.clevertap.CTSoftPhone;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

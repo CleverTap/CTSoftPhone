@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HAS_VIDEO=0 # set to zero to disable video
+HAS_VIDEO=1 # set to zero to disable video
 
 # see http://stackoverflow.com/a/3915420/318790
 function realpath { echo $(cd $(dirname "$1"); pwd)/$(basename "$1"); }
@@ -36,7 +36,7 @@ LIB_PATHS=("pjlib/lib" \
            "third_party/lib")
 
 OPENSSL_PREFIX=
-OPUS_PREFIX=
+OPUS_PREFIX="${__DIR__}/build/opus"
 while [ "$#" -gt 0 ]; do
     case $1 in
         --with-openssl)
@@ -51,7 +51,7 @@ while [ "$#" -gt 0 ]; do
             ;;
         --with-opus)
             if [ "$#" -gt 1 ]; then
-                OPUS_PREFIX=$(python -c "import os,sys; print os.path.realpath(sys.argv[1])" "$2")
+                OPUS_PREFIX=`realpath "$1"`
                 shift 2
                 continue
             else
@@ -165,6 +165,7 @@ function configure () {
 
 	clean_libs ${ARCH} ${TYPE}
 	make distclean >> ${LOG} 2>&1
+    echo "${CONFIGURE}"
 	ARCH="-arch ${ARCH}" ${CONFIGURE} >> ${LOG} 2>&1
 }
 

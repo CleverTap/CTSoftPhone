@@ -15,8 +15,11 @@ build/opus/*
 !build/opus/dependencies
 build/opus/dependencies/*
 
-!build/opus/dependencies/lib
-!build/opus/dependencies/lib/*
+!build/opus/lib
+!build/opus/lib/*
+
+!build/opus/include
+!build/opus/include/*
 
 # openssl
 !build/openssl

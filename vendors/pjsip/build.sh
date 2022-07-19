@@ -58,5 +58,5 @@ function pjsip() {
 }
 
 #openssl
-#opus
+opus
 pjsip
