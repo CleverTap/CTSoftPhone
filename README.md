@@ -7,36 +7,40 @@ Basic [PJSUA/PJSIP](https://www.pjsip.org/) wrapper supporting VOIP calling on i
 ```
 import CTSoftPhone
 
-... 
-
-static var pjsipClient: CTSoftPhone = CTSoftPhone() // init
-
-...
-
 // set logging level
 CTSoftPhone.setDebugLevel(CTSoftPhoneLogLevel.debug)
 // CTSoftPhone.setDebugLevel(CTSoftPhoneLogLevel.info)
 // CTSoftPhone.setDebugLevel(CTSoftPhoneLogLevel.off)
 
-let status = pjsipClient.start(withNumber: num, withHost: host, withCredentials: credentials)
-if (status == CTSoftPhoneStatus.success) {
-    // connected 
- } else {
-    // handle not connected
- }
+... 
+
+// implement CTSoftPhoneDelegate
+@objc func onRegistrationState(_ state: CTSoftPhoneRegistrationState) {...}
+@objc func onCallState(_ state: CTSoftPhoneCallState) {...}
+
+// init sharedInstance with your delegate
+pjsipInstance = CTSoftPhone.sharedInstance(with: self) 
+
+...
+
+// register account
+pjsipInstance.register(withNumber: <sip account number>, withHost: <sip host>, withCredentials: <sip account credentials>)
  
- ...
+...
  
- // terminate connection 
- pjsipClient.stop()
+// unregister account 
+pjsipInstance.destroy()
+
+// end call 
+pjsipInstance.hangup()
  
- // mute/unmute
- pjsipClient.mute()
- pjsipInstance.unmute()
+// mute/unmute
+pjsipInstance.mute()
+pjsipInstance.unmute()
  
- // speaker
- pjsipClient.speakeron()
- pjsipClient.speakeroff()
+// speaker
+pjsipInstance.speakeron()
+pjsipInstance.speakeroff()
  
 ```
 
@@ -51,7 +55,7 @@ Add the `https://github.com/CleverTap/CTSoftPhone.git` url to your project's Swi
 
 ```
  target 'YOUR_TARGET_NAME' do  
-      pod 'CTSimplePhone'  
+      pod 'CTSoftPhone'  
   end 
 ```
 
