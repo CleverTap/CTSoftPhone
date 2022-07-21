@@ -6,11 +6,11 @@
 	<dict>
 		<key>Headers/CTSoftPhone.h</key>
 		<data>
-		raKqFb6/J3ezSfelihZqjNZzi6s=
+		6gMq1UMvIl1YqkuzuX9sTO7ig0U=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Q8LT/+gqNTafrFhvYti2Ydn5vUA=
+		9yWcaFLtW0WJYFoPdMQxYeZRq44=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -574,7 +574,7 @@
 		</data>
 		<key>ct_pjsua/include/pjmedia-codec/config_auto.h</key>
 		<data>
-		bCnEGWoGDpOxUhS6zh5k+iHl5Zg=
+		yNlL4pODc3Q8kk7zlZXshTuCBLU=
 		</data>
 		<key>ct_pjsua/include/pjmedia-codec/config_auto.h.in</key>
 		<data>
@@ -1283,11 +1283,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			raKqFb6/J3ezSfelihZqjNZzi6s=
+			6gMq1UMvIl1YqkuzuX9sTO7ig0U=
 			</data>
 			<key>hash2</key>
 			<data>
-			QH/fW3+GmcwcY90nup9a+ldkgpjKmYASePmtL3UoJPI=
+			B8n359eIkTPb41bRiZ5bP62x+8EIItH2KHs/vux48QE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -2834,11 +2834,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			bCnEGWoGDpOxUhS6zh5k+iHl5Zg=
+			yNlL4pODc3Q8kk7zlZXshTuCBLU=
 			</data>
 			<key>hash2</key>
 			<data>
-			sWa7P07+knUF4v4Ibb5Pj6LQDtvjC3VPhBeF/QG5Os8=
+			c3RbyiLNE5RcnmqKvf9oxwdkJNvDeBgq9a5XT1gbzEA=
 			</data>
 		</dict>
 		<key>ct_pjsua/include/pjmedia-codec/config_auto.h.in</key>

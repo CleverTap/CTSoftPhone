@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "CTSoftPhone",
-            url: "https://github.com/CleverTap/CTSoftPhone/releases/download/0.0.3-alpha/CTSoftPhone.xcframework.zip",
-            checksum: "6867cb2a806470bb3a6923332a1aaeb55cb8185c72bb5b6da737eb95ce670551"
+            url: "https://github.com/CleverTap/CTSoftPhone/releases/download/0.0.4-alpha/CTSoftPhone.xcframework.zip",
+            checksum: "171a4838953f3b713c4a75b7cf94072f4da6fb7da0090f6704cc068026011a79"
         )
     ]
 )

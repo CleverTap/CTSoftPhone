@@ -6,26 +6,50 @@ typedef NS_ENUM(int, CTSoftPhoneLogLevel) {
     CTSoftPhoneLogDebug = 2,
 };
 
-typedef NS_ENUM(int, CTSoftPhoneStatus) {
-    CTSoftPhoneStatusSuccess = 0,
-    CTSoftPhoneStatusFail = 1
+typedef NS_ENUM(int, CTSoftPhoneRegistrationState) {
+    CTSoftPhoneRegistrationStateSuccess = 0,
+    CTSoftPhoneRegistrationStateFail = 1,
+    CTSoftPhoneRegistrationStateDestroyed = 2
 };
+
+typedef NS_ENUM(int, CTSoftPhoneCallState) {
+    CTSoftPhoneCallStateNull = 0,
+    CTSoftPhoneCallStateCalling = 1,
+    CTSoftPhoneCallStateIncoming = 2,
+    CTSoftPhoneCallStateEarly = 3,
+    CTSoftPhoneCallStateConnecting = 4,
+    CTSoftPhoneCallStateConfired = 5,
+    CTSoftPhoneCallStateMediaNone = 6,
+    CTSoftPhoneCallStateMediaActive = 7,
+    CTSoftPhoneCallStateMediaLocalHold = 8,
+    CTSoftPhoneCallStateMediaRemoteHold = 9,
+    CTSoftPhoneCallStateMediaError = 10,
+};
+
+@protocol CTSoftPhoneDelegate <NSObject>
+@required
+- (void)onRegistrationState:(CTSoftPhoneRegistrationState)state;
+- (void)onCallState:(CTSoftPhoneCallState)state;
+@end
 
 @interface CTSoftPhone: NSObject
 
 + (void)setDebugLevel:(CTSoftPhoneLogLevel)level;
++ (instancetype _Nonnull)sharedInstanceWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate;
++ (instancetype _Nullable)sharedInstance;
 
-- (CTSoftPhoneStatus)startWithNumber:(NSString *)number
-                            withHost:(NSString*)host
-                     withCredentials:(NSString *)credentials;
-- (void)stop;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
+
+- (void)registerWithNumber:(NSString *_Nonnull)number
+                   withHost:(NSString*_Nonnull)host
+            withCredentials:(NSString *_Nonnull)credentials;
+- (void)handleIpChange:(BOOL)ipv6;
+- (void)destroy;
 - (void)hangup;
 - (void)mute;
 - (void)unmute;
 - (void)speakeron;
 - (void)speakeroff;
-
-void answercall(void);
 
 @end
 
