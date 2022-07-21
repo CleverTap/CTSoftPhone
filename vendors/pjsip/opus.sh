@@ -115,8 +115,8 @@ do
 
 	./configure --enable-float-approx --disable-shared --enable-static --with-pic --disable-extra-programs --disable-doc ${EXTRA_CONFIG} \
     --prefix="${INTERDIR}/${PLATFORM}${SDKVERSION_IPHONE}-${ARCH}.sdk" \
-    LDFLAGS="$LDFLAGS ${OPT_LDFLAGS} -fPIE -L${OUTPUTDIR}/lib" \
-    CFLAGS="$CFLAGS ${EXTRA_CFLAGS} ${OPT_CFLAGS} -fPIE -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION_IPHONE}.sdk" \
+    LDFLAGS="$LDFLAGS ${OPT_LDFLAGS} -fPIE -miphoneos-version-min=${MINIOSVERSION} -L${OUTPUTDIR}/lib" \
+    CFLAGS="$CFLAGS ${EXTRA_CFLAGS} ${OPT_CFLAGS} -fPIE -miphoneos-version-min=${MINIOSVERSION} -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION_IPHONE}.sdk" \
 
 	make -j4
 	make install
