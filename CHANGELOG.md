@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+### [Version 0.0.5-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.5-alpha) 
+
+
 ### [Version 0.0.4-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.4-alpha) (July 21, 2022)
 
  - Adds support for opus
