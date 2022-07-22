@@ -1,4 +1,5 @@
 #import <AVFoundation/AVFoundation.h>
+#import <CTSoftPhone/CTSoftPhoneConfig.h>
 
 typedef NS_ENUM(int, CTSoftPhoneLogLevel) {
     CTSoftPhoneLogOff = 0,
@@ -35,7 +36,8 @@ typedef NS_ENUM(int, CTSoftPhoneCallState) {
 @interface CTSoftPhone: NSObject
 
 + (void)setDebugLevel:(CTSoftPhoneLogLevel)level;
-+ (instancetype _Nonnull)sharedInstanceWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate;
++ (instancetype _Nonnull)sharedInstanceWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate
+                                             config:(CTSoftPhoneConfig *_Nonnull)config;
 + (instancetype _Nullable)sharedInstance;
 
 - (instancetype _Nonnull)init NS_UNAVAILABLE;
@@ -43,7 +45,7 @@ typedef NS_ENUM(int, CTSoftPhoneCallState) {
 - (void)registerWithNumber:(NSString *_Nonnull)number
                    withHost:(NSString*_Nonnull)host
             withCredentials:(NSString *_Nonnull)credentials;
-- (void)handleIpChange:(BOOL)ipv6;
+- (void)handleIpChange:(CTSoftPhoneTransportType)transport;
 - (void)destroy;
 - (void)hangup;
 - (void)mute;

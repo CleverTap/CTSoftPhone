@@ -1,6 +1,7 @@
 #import "CTSoftPhone.h"
 #import "ct_pjsua/ct_pjsua.h"
 #import <os/log.h>
+#import "CTSoftPhoneConfig.h"
 
 #define CTSoftPhone_Log(level, ...)    do { \
                     if (level <= logLevel) { \
@@ -8,11 +9,22 @@
                     } \
                 } while (0)
 
+@interface CTSoftPhoneConfig (Private) {}
+
+@property (nonatomic, assign, readwrite) CTSoftPhoneTransportType transport;
+
+- (NSString *_Nonnull)transportDescription;
+- (pjsip_transport_type_e)pjTransportType;
+- (BOOL)isIPv6;
+
+@end
+
 @interface CTSoftPhone () {
     dispatch_queue_t _serialQueue;
 }
 
 @property (nonatomic, weak, readwrite) id<CTSoftPhoneDelegate> _Nullable delegate;
+@property (atomic, strong, readwrite) CTSoftPhoneConfig *_Nonnull config;
 
 @property(atomic,assign) pjsua_call_id call_id;
 @property(atomic,assign) bool pjsuaInitialized;
@@ -52,13 +64,15 @@ static const void *const kQueueKey = &kQueueKey;
     }
 }
 
-+ (instancetype _Nonnull)sharedInstanceWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate {
++ (instancetype _Nonnull)sharedInstanceWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate
+                                             config:(CTSoftPhoneConfig *_Nonnull)config; {
     CTSoftPhone *instance = [self sharedInstance];
     if (instance == nil) {
-        instance = [[CTSoftPhone alloc] initWithDelegate:delegate];
+        instance = [[CTSoftPhone alloc] initWithDelegate:delegate config:config];
         [self setSharedInstance:instance];
     }
     return instance;
+    
 }
 
 + (void)onRegistrationState:(CTSoftPhoneRegistrationState)state {
@@ -69,16 +83,17 @@ static const void *const kQueueKey = &kQueueKey;
     [[self sharedInstance] onCallState:state];
 }
 
-
-- (instancetype _Nonnull)initWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate {
+- (instancetype _Nonnull)initWithDelegate:(id<CTSoftPhoneDelegate> _Nonnull)delegate config:(CTSoftPhoneConfig *_Nonnull)config {
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        self.config = config;
         _serialQueue = dispatch_queue_create([@"com.clevertap.CTSoftPhone" UTF8String], DISPATCH_QUEUE_SERIAL);
         dispatch_queue_set_specific(_serialQueue, kQueueKey, (__bridge void *)self, NULL);
     }
     return self;
 }
+
 
 - (void)registerThread {
     pj_status_t status;
@@ -165,8 +180,8 @@ static const void *const kQueueKey = &kQueueKey;
                 
                 pjsua_transport_config tcfg;
                 pjsua_transport_config_default(&tcfg);
-                tcfg.port = 7503;
-                status = pjsua_transport_create(PJSIP_TRANSPORT_TCP, &tcfg, NULL);
+                tcfg.port = self.config.port;
+                status = pjsua_transport_create([self.config pjTransportType], &tcfg, NULL);
                 status = pjsua_start();
                 if (status != PJ_SUCCESS) {
                     CTSoftPhone_Log(CTSoftPhoneLogInfo, "failed starting pjsua");
@@ -175,10 +190,11 @@ static const void *const kQueueKey = &kQueueKey;
                     return;
                 }
             }
+            NSString *transport = [self.config transportDescription];
             NSString *string1 = @"sip:";
             NSString *string2 = @"@";
-            NSString *string3 = @":7503;transport=tcp";
-            NSString *string4 = @";transport=tcp";
+            NSString *string3 = [NSString stringWithFormat:@":%i;transport=%@", self.config.port, transport];
+            NSString *string4 = [NSString stringWithFormat:@";transport=%@", transport];
             NSString *uri = [string1 stringByAppendingString:num];
             NSString *reg = [string2 stringByAppendingString:_host];
             NSString *newUri = [uri stringByAppendingString:reg];
@@ -232,7 +248,7 @@ static const void *const kQueueKey = &kQueueKey;
     }];
 }
 
-- (void)handleIpChange:(BOOL)ipv6 {
+- (void)handleIpChange:(CTSoftPhoneTransportType)transport {
     [self runAsync: ^{
         @try {
             [self registerThread];
@@ -241,18 +257,16 @@ static const void *const kQueueKey = &kQueueKey;
             }
             pjsua_ip_change_param param;
             
-            if(ipv6) {
-                //create new ipv6 transport, if it's not yet available
+            if(self.config.transport != transport) {
+                //create new transport, if it's not yet available
                 pjsua_transport_config tcfg;
                 pjsua_transport_config_default(&tcfg);
-                tcfg.port = 7503;
+                tcfg.port = self.config.port;
                 pjsua_transport_id transportId;
-                status = pjsua_transport_create(PJSIP_TRANSPORT_TCP6, &tcfg, &transportId);
-
-                // bind account to IPv6 transport
+                self.config.transport = transport;
+                status = pjsua_transport_create([self.config pjTransportType], &tcfg, &transportId);
                 pjsua_acc_set_transport(acc_id, transportId);
-
-                // modify specific IPv6 account configuration
+                // modify specific account configuration
                 pjsua_acc_config acc_cfg;
                 pj_pool_t pool;
                 pjsua_acc_get_config(acc_id, &pool, &acc_cfg);

@@ -13,6 +13,8 @@
 		D04FECDC27D82E8B00019537 /* CTSoftPhone.h in Headers */ = {isa = PBXBuildFile; fileRef = D04FEA4B27D82E8900019537 /* CTSoftPhone.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D04FEF7627D82FB200019537 /* ct_pjsua in Resources */ = {isa = PBXBuildFile; fileRef = D04FEF7527D82FB200019537 /* ct_pjsua */; };
 		D04FEF7927D8303F00019537 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04FEF7827D8303F00019537 /* VideoToolbox.framework */; };
+		D071533E288B4B1B00C0E6E9 /* CTSoftPhoneConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = D071533C288B4B1B00C0E6E9 /* CTSoftPhoneConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D071533F288B4B1B00C0E6E9 /* CTSoftPhoneConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D071533D288B4B1B00C0E6E9 /* CTSoftPhoneConfig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		D04FEA4B27D82E8900019537 /* CTSoftPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTSoftPhone.h; sourceTree = "<group>"; };
 		D04FEF7527D82FB200019537 /* ct_pjsua */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ct_pjsua; sourceTree = "<group>"; };
 		D04FEF7827D8303F00019537 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		D071533C288B4B1B00C0E6E9 /* CTSoftPhoneConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTSoftPhoneConfig.h; sourceTree = "<group>"; };
+		D071533D288B4B1B00C0E6E9 /* CTSoftPhoneConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTSoftPhoneConfig.m; sourceTree = "<group>"; };
 		D093A58627E6BEDF004790E5 /* simulator-libg7221codec-apple-darwin_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "simulator-libg7221codec-apple-darwin_ios.a"; path = "vendors/pjsip/build/pjproject/src/third_party/lib/simulator-libg7221codec-apple-darwin_ios.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,6 +193,8 @@
 				D04FEF7527D82FB200019537 /* ct_pjsua */,
 				D04FE7B227D82E8900019537 /* CTSoftPhone.m */,
 				D04FEA4B27D82E8900019537 /* CTSoftPhone.h */,
+				D071533C288B4B1B00C0E6E9 /* CTSoftPhoneConfig.h */,
+				D071533D288B4B1B00C0E6E9 /* CTSoftPhoneConfig.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -209,6 +215,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D071533E288B4B1B00C0E6E9 /* CTSoftPhoneConfig.h in Headers */,
 				D04FECDC27D82E8B00019537 /* CTSoftPhone.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,6 +317,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		D03CDF6E27D84709004C8E16 /* Copy include headers */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -334,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D04FEA6327D82E8900019537 /* CTSoftPhone.m in Sources */,
+				D071533F288B4B1B00C0E6E9 /* CTSoftPhoneConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
