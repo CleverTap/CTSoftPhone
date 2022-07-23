@@ -6,7 +6,11 @@
 	<dict>
 		<key>Headers/CTSoftPhone.h</key>
 		<data>
-		6gMq1UMvIl1YqkuzuX9sTO7ig0U=
+		9NxkJTAvrVlzOQ/XbLt5QXL/VEQ=
+		</data>
+		<key>Headers/CTSoftPhoneConfig.h</key>
+		<data>
+		sDew6155APmzY4lxzfzPxqPj+sc=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -14,7 +18,7 @@
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		2tQ3jUgRzVQXVaIY97bZYpVBpEU=
+		5yWwpw2d7uqi5FATs+PLmpFgX2U=
 		</data>
 		<key>ct_pjsua/ct_pjsua.h</key>
 		<data>
@@ -1283,22 +1287,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			6gMq1UMvIl1YqkuzuX9sTO7ig0U=
+			9NxkJTAvrVlzOQ/XbLt5QXL/VEQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			B8n359eIkTPb41bRiZ5bP62x+8EIItH2KHs/vux48QE=
+			ujQAK0GBrZxdZqqGpk0vJdWxEl0pgr57AjuTDYXgInI=
+			</data>
+		</dict>
+		<key>Headers/CTSoftPhoneConfig.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sDew6155APmzY4lxzfzPxqPj+sc=
+			</data>
+			<key>hash2</key>
+			<data>
+			9DJ601US8NzUa33zVBBr7r3JtkREkiKt2Jmu20XfZOQ=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			2tQ3jUgRzVQXVaIY97bZYpVBpEU=
+			5yWwpw2d7uqi5FATs+PLmpFgX2U=
 			</data>
 			<key>hash2</key>
 			<data>
-			SLXIWqQwKs+jAR8LPS8iLEQhdviJ55xgaXMkbxD5Vb8=
+			t5dxy/ZkunvuQS52J1plNqajFKqT0ghkhGJKfwQ0uG0=
 			</data>
 		</dict>
 		<key>ct_pjsua/ct_pjsua.h</key>
