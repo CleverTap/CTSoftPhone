@@ -2,8 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-### [Version 0.0.5-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.5-alpha) 
-
+### [Version 0.0.5-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.5-alpha) (July 23, 2022)
+ 
+ - Adds CTSoftPhoneConfig for port and transport
 
 ### [Version 0.0.4-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.4-alpha) (July 21, 2022)
 
