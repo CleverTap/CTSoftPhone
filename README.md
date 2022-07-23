@@ -71,4 +71,4 @@ Usage with transports other than TCP has not been tested.
 Asterisk v18.9.0 is the only SIP server this has been tested with so far.
 This is a basic wrapper around pjsua and does not implement all functionality.  
 The current version requires an external trigger to your SIP server to generate an invite once the client is registered with the SIP server.
-There is no general plan to implement all available functionality although PRs will be considered.
+There is no general plan to implement all available functionality although happyt to consider PRs.
