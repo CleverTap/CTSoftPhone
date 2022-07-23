@@ -18,8 +18,11 @@ CTSoftPhone.setDebugLevel(CTSoftPhoneLogLevel.debug)
 @objc func onRegistrationState(_ state: CTSoftPhoneRegistrationState) {...}
 @objc func onCallState(_ state: CTSoftPhoneCallState) {...}
 
-// init sharedInstance with your delegate
-pjsipInstance = CTSoftPhone.sharedInstance(with: self) 
+// create config with port and transport type
+let pjsipConfig = CTSoftPhoneConfig.init(port: 7503, transport: .TCP)
+
+// init sharedInstance with your delegate and config
+pjsipInstance = CTSoftPhone.sharedInstance(with: self, config: pjsipConfig)
 
 ...
 
@@ -63,3 +66,9 @@ Add the `https://github.com/CleverTap/CTSoftPhone.git` url to your project's Swi
 
 Download the `CTSoftPhone.xcframework` included in this repository, drag it into your project and add it as an embedded framework in your build settings
 
+### Caveats
+Usage with transports other than TCP has not been tested.
+Asterisk v18.9.0 is the only SIP server this has been tested with so far.
+This is a basic wrapper around pjsua and does not implement all functionality.  
+The current version requires an external trigger to your SIP server to generate an invite once the client is registered with the SIP server.
+There is no general plan to implement all available functionality although PRs will be considered.
