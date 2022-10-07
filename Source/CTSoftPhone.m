@@ -125,18 +125,18 @@ static const void *const kQueueKey = &kQueueKey;
 /**
  registers the user to sip server
 
- @param number  phone of the user
+ @param accountCuid Signed Call account id and cuid concatenated string 
  @param host host to which user is to be connected
  @param credentials credentials required to establish the connection
  */
-- (void)registerWithNumber:(NSString *)number
+- (void)registerWithAccountCuid:(NSString *)accountCuid
                       withHost:(NSString*)host
            withCredentials:(NSString *)credentials {
     CTSoftPhone_Log(CTSoftPhoneLogInfo, "register called");
     [self runAsync: ^{
         @try {
             [self registerThread];
-            NSString *num = number;
+            NSString *num = accountCuid;
             NSString *_host = host;
             if (!self.pjsuaInitialized) {
                self.pjsuaInitialized = true;
