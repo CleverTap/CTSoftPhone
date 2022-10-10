@@ -125,7 +125,7 @@ static const void *const kQueueKey = &kQueueKey;
 /**
  registers the user to sip server
 
- @param accountCuid Signed Call account id and cuid concatenated string 
+ @param accountCuid Signed Call account id and cuid concatenated string
  @param host host to which user is to be connected
  @param credentials credentials required to establish the connection
  */
