@@ -1,5 +1,0 @@
-framework module CTSoftPhone {    
-    header "CTSoftPhone.h"
-    header "CTSoftPhoneConfig.h"
-    export *
-}

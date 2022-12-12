@@ -190,6 +190,9 @@ static const void *const kQueueKey = &kQueueKey;
                     return;
                 }
             }
+            pjsua_acc_config cfg;
+            pjsua_acc_config_default(&cfg);
+            
             NSString *transport = [self.config transportDescription];
             NSString *string1 = @"sip:";
             NSString *string2 = @"@";
@@ -205,8 +208,7 @@ static const void *const kQueueKey = &kQueueKey;
             const char *p = [proxy UTF8String];
             const char *number = [num UTF8String];
             const char *pjsipPassword = [credentials UTF8String];
-            pjsua_acc_config cfg;
-            pjsua_acc_config_default(&cfg);
+
             
             NSArray *namesArray = [newUri componentsSeparatedByString:@"@"];
             NSString *newChar;

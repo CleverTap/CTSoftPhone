@@ -23,7 +23,7 @@
 #  Choose your libopus version and your currently-installed iOS SDK version:
 #
 VERSION=${OPUS_VERSION:-"1.3.1"}
-SDKVERSION="15.5"
+SDKVERSION="16.0"
 MINIOSVERSION=${IOS_MIN_SDK_VERSION:-"10.0"}
 
 ###########################################################################
@@ -45,7 +45,7 @@ else
 fi
 
 
-SDKVERSION_IPHONE="15.5"
+SDKVERSION_IPHONE="16.0"
 ARCHS_DEVICES_IPHONE="arm64 armv7 armv7s"
 ARCHS_SIMULATOR_IPHONE="i386 x86_64 arm64"
 
