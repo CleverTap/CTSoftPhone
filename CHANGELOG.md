@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-### [Version 0.0.6-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.6-alpha) (December 5, 2022)
+### [Version 0.0.6-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.6-alpha) (December 19, 2022)
  
- - Upgraded PJSIP v2.13 dependency
+ - Upgraded PJSIP dependency v2.13
  
 ### [Version 0.0.5-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.5-alpha) (July 23, 2022)
  
