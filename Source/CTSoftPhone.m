@@ -125,7 +125,7 @@ static const void *const kQueueKey = &kQueueKey;
 /**
  registers the user to sip server
 
- @param number  phone of the user
+ @param number number phone of the user
  @param host host to which user is to be connected
  @param credentials credentials required to establish the connection
  */
@@ -190,6 +190,9 @@ static const void *const kQueueKey = &kQueueKey;
                     return;
                 }
             }
+            pjsua_acc_config cfg;
+            pjsua_acc_config_default(&cfg);
+            
             NSString *transport = [self.config transportDescription];
             NSString *string1 = @"sip:";
             NSString *string2 = @"@";
@@ -205,8 +208,7 @@ static const void *const kQueueKey = &kQueueKey;
             const char *p = [proxy UTF8String];
             const char *number = [num UTF8String];
             const char *pjsipPassword = [credentials UTF8String];
-            pjsua_acc_config cfg;
-            pjsua_acc_config_default(&cfg);
+
             
             NSArray *namesArray = [newUri componentsSeparatedByString:@"@"];
             NSString *newChar;
