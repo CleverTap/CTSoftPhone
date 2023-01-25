@@ -35,7 +35,7 @@ LIB_PATHS=("pjlib/lib" \
            "pjsip/lib" \
            "third_party/lib")
 
-OPENSSL_PREFIX=
+OPENSSL_PREFIX="${__DIR__}/build/openssl"
 OPUS_PREFIX="${__DIR__}/build/opus"
 while [ "$#" -gt 0 ]; do
     case $1 in
@@ -103,6 +103,8 @@ function configure () {
 	fi
 
 	echo "#define PJ_HAS_IPV6 1" >> "${PJSIP_CONFIG_PATH}" # Enable IPV6
+	echo "#define PJ_HAS_SSL_SOCK 1" >> "${PJSIP_CONFIG_PATH}"
+	echo "#define PJSIP_HAS_TLS_TRANSPORT 1" >> "${PJSIP_CONFIG_PATH}"
 	echo "#include <pj/config_site_sample.h>" >> "${PJSIP_CONFIG_PATH}" # Include example config
 
 	# flags

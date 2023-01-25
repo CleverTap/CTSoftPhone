@@ -1,0 +1,3 @@
+[submodule "vendors/openssl"]
+	path = vendors/openssl
+	url = git@github.com:CleverTap/OpenSSL.git

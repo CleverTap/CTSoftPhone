@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		bIQEx9oDCnNshQhvkDF81wicqZs=
+		MLRYm6yip7eeQN/nTJTV3WU1cmE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -23,10 +23,6 @@
 		<key>ct_pjsua/ct_pjsua.h</key>
 		<data>
 		bgmFEXnBhzqt3z0OnL9d9S826lU=
-		</data>
-		<key>ct_pjsua/include/.DS_Store</key>
-		<data>
-		mtfqDDPIpVJeEJdUQ91otrYRyCE=
 		</data>
 		<key>ct_pjsua/include/pj++/file.hpp</key>
 		<data>
@@ -79,10 +75,6 @@
 		<key>ct_pjsua/include/pj++/types.hpp</key>
 		<data>
 		4cmrw+sZQLvptm9pRjleu3FulnY=
-		</data>
-		<key>ct_pjsua/include/pj/.DS_Store</key>
-		<data>
-		FQlVUp/AFyHws8I9E3ildWCu89Q=
 		</data>
 		<key>ct_pjsua/include/pj/activesock.h</key>
 		<data>
@@ -186,7 +178,7 @@
 		</data>
 		<key>ct_pjsua/include/pj/compat/os_auto.h</key>
 		<data>
-		HerUnB64RD7ZrnZUc5LBXSypOtY=
+		PTrGe8UiEalsd4ooi9jcIrOvOqg=
 		</data>
 		<key>ct_pjsua/include/pj/compat/os_auto.h.in</key>
 		<data>
@@ -270,7 +262,7 @@
 		</data>
 		<key>ct_pjsua/include/pj/config_site.h</key>
 		<data>
-		emcrLXFgPoWyf8lS9M2zz9CeQsM=
+		qps7mw5JfUbRE6foo9RNtuYSWBE=
 		</data>
 		<key>ct_pjsua/include/pj/config_site_sample.h</key>
 		<data>
@@ -1761,11 +1753,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HerUnB64RD7ZrnZUc5LBXSypOtY=
+			PTrGe8UiEalsd4ooi9jcIrOvOqg=
 			</data>
 			<key>hash2</key>
 			<data>
-			dPv2XHjrWxwPyIRkOhQl2BI8h1UovPicSj/Oa7TjGuY=
+			ZXzU9t6ytx39IC6ZJViC9yIZA/UEGkoW8aZ6w9Iu1SY=
 			</data>
 		</dict>
 		<key>ct_pjsua/include/pj/compat/os_auto.h.in</key>
@@ -1992,11 +1984,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			emcrLXFgPoWyf8lS9M2zz9CeQsM=
+			qps7mw5JfUbRE6foo9RNtuYSWBE=
 			</data>
 			<key>hash2</key>
 			<data>
-			WYMykHAdCFLGUY55SctZ0sY96KU6ia+mIBxguUQYxX0=
+			1eraQQ4hzAywF/m/ZLJkihiVDIkoSDPrukXfYmesRgk=
 			</data>
 		</dict>
 		<key>ct_pjsua/include/pj/config_site_sample.h</key>
