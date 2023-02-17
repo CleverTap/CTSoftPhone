@@ -105,7 +105,9 @@ function configure () {
 	echo "#define PJ_HAS_IPV6 1" >> "${PJSIP_CONFIG_PATH}" # Enable IPV6
 	echo "#define PJ_HAS_SSL_SOCK 1" >> "${PJSIP_CONFIG_PATH}"
 	echo "#define PJSIP_HAS_TLS_TRANSPORT 1" >> "${PJSIP_CONFIG_PATH}"
-	echo "#include <pj/config_site_sample.h>" >> "${PJSIP_CONFIG_PATH}" # Include example config
+    echo "#define PJMEDIA_HAS_SRTP 1" >> "${PJSIP_CONFIG_PATH}"
+    echo "#define PJMEDIA_SRTP_HAS_DTLS 1" >> "${PJSIP_CONFIG_PATH}"
+    #echo "#include <pj/config_site_sample.h>" >> "${PJSIP_CONFIG_PATH}" # Include example config
 
 	# flags
 	unset DEVPATH

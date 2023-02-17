@@ -10,4 +10,5 @@
 #define PJ_HAS_IPV6 1
 #define PJ_HAS_SSL_SOCK 1
 #define PJSIP_HAS_TLS_TRANSPORT 1
-#include <pj/config_site_sample.h>
+#define PJMEDIA_HAS_SRTP 1
+#define PJMEDIA_SRTP_HAS_DTLS 1
