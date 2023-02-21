@@ -15,6 +15,8 @@
 
 - (NSString *_Nonnull)transportDescription;
 - (pjsip_transport_type_e)pjTransportType;
+- (pjmedia_srtp_use)pjSRTPStatus;
+- (int)useSecureSignaling;
 - (BOOL)isIPv6;
 
 @end
@@ -158,8 +160,8 @@ static const void *const kQueueKey = &kQueueKey;
                 pjsua_config cfg_log;
                 pjsua_logging_config log_cfg;
                 pjsua_config_default(&cfg_log);
-                cfg_log.use_srtp = PJMEDIA_SRTP_MANDATORY;
-                cfg_log.srtp_secure_signaling = 0;
+                cfg_log.use_srtp = [self.config pjSRTPStatus];
+                cfg_log.srtp_secure_signaling = [self.config useSecureSignaling];
                 cfg_log.cb.on_incoming_call = &on_incoming_call;
                 cfg_log.cb.on_call_media_state = &on_call_media_state;
                 cfg_log.cb.on_call_state = &on_call_state;
@@ -194,8 +196,8 @@ static const void *const kQueueKey = &kQueueKey;
             }
             pjsua_acc_config cfg;
             pjsua_acc_config_default(&cfg);
-            cfg.use_srtp = PJMEDIA_SRTP_MANDATORY;
-            cfg.srtp_secure_signaling = 0;
+            cfg.use_srtp = [self.config pjSRTPStatus];
+            cfg.srtp_secure_signaling = [self.config useSecureSignaling];
             
             NSString *transport = [self.config transportDescription];
             NSString *string1 = @"sip:";
