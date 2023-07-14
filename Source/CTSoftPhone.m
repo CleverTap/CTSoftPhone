@@ -287,6 +287,23 @@ static const void *const kQueueKey = &kQueueKey;
     }];
 }
 
+- (void)dtmf:(NSString*) digits {
+    @try {
+       [self runAsync: ^{
+           [self registerThread];
+           pjsua_call_send_dtmf_param param;
+           pjsua_call_send_dtmf_param_default(&param);
+           param.digits = pj_str((char *) [digits UTF8String]);
+           param.method = PJSUA_DTMF_METHOD_SIP_INFO;
+           pjsua_call_send_dtmf(callId, &param);
+           CTSoftPhone_Log(CTSoftPhoneLogInfo, "dtmf input successfully sent to asterisk");
+        }];
+    }
+    @catch (NSException *exception) {
+        CTSoftPhone_Log(CTSoftPhoneLogDebug, "unable to send dtmf input  to asterisk: %@", exception);
+    }
+}
+
 /**
  called by user to shutdown the service.
  */
