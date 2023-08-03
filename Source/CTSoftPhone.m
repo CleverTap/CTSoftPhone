@@ -445,6 +445,45 @@ static const void *const kQueueKey = &kQueueKey;
     }
 }
 
+- (void)hold {
+    @try {
+        [self runAsync: ^{
+            [self registerThread];
+            pjsua_call_id call_id = getCallid();
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in hold: %d", call_id);
+            pjsua_call_set_hold(call_id, NULL);
+            pjsua_set_no_snd_dev();
+        }];
+        
+        
+    }
+    @catch (NSException *exception) {
+        CTSoftPhone_Log(CTSoftPhoneLogDebug, "hold: %@", exception);
+    }
+}
+
+- (void)unhold {
+    @try {
+        [self runAsync: ^{
+            pj_status_t status;
+            [self registerThread];
+            pjsua_call_id call_id = getCallid();
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "call id in unhold: %d", call_id);
+            status = pjsua_call_reinvite(call_id, PJSUA_CALL_UNHOLD, NULL);
+            NSLog(@"call status  :::: %d", status);
+            int captDev, playDev;
+            status = pjsua_get_snd_dev(&captDev, &playDev);
+//            pjsua_set_snd_dev(captDev, playDev);
+            NSLog(@"call status pjsua_get_snd_dev :::: %d", status);
+        }];
+        
+        
+    }
+    @catch (NSException *exception) {
+        CTSoftPhone_Log(CTSoftPhoneLogDebug, "unhold: %@", exception);
+    }
+}
+
 - (void)onRegistrationState:(CTSoftPhoneRegistrationState)state {
     [self.delegate onRegistrationState:state];
 }
