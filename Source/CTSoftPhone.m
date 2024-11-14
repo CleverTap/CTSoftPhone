@@ -347,8 +347,10 @@ static const void *const kQueueKey = &kQueueKey;
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSError *error = nil;
         success = [session setCategory:AVAudioSessionCategoryPlayAndRecord
-                           withOptions:AVAudioSessionCategoryOptionMixWithOthers
-                                 error:&error];
+                                            mode:AVAudioSessionModeVoiceChat
+                                         options:AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionAllowBluetoothA2DP|
+                                                AVAudioSessionCategoryOptionAllowAirPlay
+                                           error:&error];
         if (!success) {
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setCategory: %@", [error localizedDescription]);
         }
@@ -381,8 +383,11 @@ static const void *const kQueueKey = &kQueueKey;
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSError *error = nil;
         success = [session setCategory:AVAudioSessionCategoryPlayAndRecord
-                           withOptions:AVAudioSessionCategoryOptionMixWithOthers
-                                 error:&error];
+                                            mode:AVAudioSessionModeVoiceChat
+                                         options:AVAudioSessionCategoryOptionAllowBluetooth |       AVAudioSessionCategoryOptionAllowBluetoothA2DP |
+                                                AVAudioSessionCategoryOptionAllowAirPlay
+                                           error:&error];
+        
         if (!success) {
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setCategory: %@", [error localizedDescription]);
         }
