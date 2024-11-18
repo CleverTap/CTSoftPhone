@@ -355,14 +355,14 @@ static const void *const kQueueKey = &kQueueKey;
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setCategory: %@", [error localizedDescription]);
         }
         
-        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        if (!success) {
-            CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error overrideOutputAudioPort: %@", [error localizedDescription]);
-        }
-        
         success = [session setActive:YES error:&error];
         if (!success) {
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setActive: %@", [error localizedDescription]);
+        }
+        
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        if (!success) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error overrideOutputAudioPort: %@", [error localizedDescription]);
         }
         
         if (success) {
@@ -392,14 +392,14 @@ static const void *const kQueueKey = &kQueueKey;
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setCategory: %@", [error localizedDescription]);
         }
         
-        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
-        if (!success) {
-            CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error overrideOutputAudioPort: %@", [error localizedDescription]);
-        }
-        
         success = [session setActive:YES error:&error];
         if (!success) {
             CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error setActive: %@", [error localizedDescription]);
+        }
+        
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+        if (!success) {
+            CTSoftPhone_Log(CTSoftPhoneLogDebug, "AVAudioSession error overrideOutputAudioPort: %@", [error localizedDescription]);
         }
         
         if (success) {

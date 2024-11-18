@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		bIQEx9oDCnNshQhvkDF81wicqZs=
+		S+1Kzx2dkpyRv4RbA7tFixiI300=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -23,10 +23,6 @@
 		<key>ct_pjsua/ct_pjsua.h</key>
 		<data>
 		bgmFEXnBhzqt3z0OnL9d9S826lU=
-		</data>
-		<key>ct_pjsua/include/.DS_Store</key>
-		<data>
-		mtfqDDPIpVJeEJdUQ91otrYRyCE=
 		</data>
 		<key>ct_pjsua/include/pj++/file.hpp</key>
 		<data>
@@ -79,10 +75,6 @@
 		<key>ct_pjsua/include/pj++/types.hpp</key>
 		<data>
 		4cmrw+sZQLvptm9pRjleu3FulnY=
-		</data>
-		<key>ct_pjsua/include/pj/.DS_Store</key>
-		<data>
-		FQlVUp/AFyHws8I9E3ildWCu89Q=
 		</data>
 		<key>ct_pjsua/include/pj/activesock.h</key>
 		<data>
