@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "CTSoftPhone",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v12)
     ],
     products: [
         .library(
@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "CTSoftPhone",
-            url: "https://github.com/CleverTap/CTSoftPhone/releases/download/0.0.6-alpha/CTSoftPhone.xcframework.zip",
-            checksum: "876f63714ed067b2e06baab7a55fb53d00f933fd00eb25bb3035bf69b042d3e5"
+            url: "https://github.com/CleverTap/CTSoftPhone/releases/download/0.0.7-alpha/CTSoftPhone.xcframework.zip",
+            checksum: "0e8e610031a4cf19a7816c0270bf6ce4610497523f593c1c38a0c938fd61d3e4"
         )
     ]
 )
