@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### [Version 0.0.7-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.7-alpha) (November 18, 2022)
+ 
+ - Refactored the speaker management
+    - Update audio session category to VoiceChat from PlayAndRecord
+    - Explicite options to support bluetooth and airplay
+ 
 ### [Version 0.0.6-alpha](https://github.com/CleverTap/CTSoftPhone/releases/tag/0.0.6-alpha) (December 19, 2022)
  
  - Upgraded PJSIP dependency v2.13
