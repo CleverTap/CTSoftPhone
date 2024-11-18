@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name                      = "CTSoftPhone"
-s.version                   = '0.0.6-alpha'
+s.version                   = '0.0.7-alpha'
 s.summary                   = "Basic PJSUA/PJSIP wrapper enabling iOS voip calling"
 s.homepage                  = "https://github.com/CleverTap/CTSoftPhone"
 s.source                    = { :http => "https://github.com/CleverTap/CTSoftPhone/releases/download/#{s.version}/CTSoftPhone.xcframework.zip" }
@@ -9,8 +9,8 @@ of this software and associated documentation files (the "Software"), to deal in
 s.author                    = { "CleverTap" => "http://www.clevertap.com" }
 s.module_name               = 'CTSoftPhone'
 
-s.platform                  = :ios, '10.0'
-s.ios.deployment_target     = '10.0'
+s.platform                  = :ios, '12.0'
+s.ios.deployment_target     = '12.0'
 
 s.ios.frameworks            = 'Foundation', 'UIKit', 'Security', 'CoreGraphics', 'CoreImage', 'CoreFoundation', 'AVFoundation', 'AudioToolbox', 'VideoToolbox'
 s.vendored_frameworks       = 'CTSoftPhone.xcframework'
